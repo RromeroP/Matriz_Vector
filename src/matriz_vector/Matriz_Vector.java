@@ -63,9 +63,7 @@ public class Matriz_Vector {
                     if (position > 0 && position <= vector.length) {
                         System.out.print("Elige el valor: ");
                         int value = input.nextInt();
-                        update_vector(position, value, vector);
-                        System.out.println("");
-                        matrix = vector_to_matrix(col, row, vector);
+                        update_vector(position, value, vector, matrix, col, row);
                         System.out.println("");
                         valid = true;
                     } else {
@@ -89,9 +87,7 @@ public class Matriz_Vector {
                     if ((position_col > 0 && position_col <= col) && (position_row > 0 && position_row <= row)) {
                         System.out.print("Elige el valor: ");
                         int value = input.nextInt();
-                        update_matrix(position_col, position_row, value, matrix);
-                        System.out.println("");
-                        vector = matrix_to_vector(col, row, matrix);
+                        update_matrix(position_col, position_row, value, matrix, vector);
                         System.out.println("");
                         valid = true;
                     } else {
@@ -142,18 +138,37 @@ public class Matriz_Vector {
         return matrix;
     }
 
-    public static int[] update_vector(int position, int value, int[] vector) {
+    public static int[] update_vector(int position, int value, int[] vector,
+            int[][] matrix, int col, int row) {
 
         System.out.println("");
 
         //Cambiamos el valor del vector
         vector[position - 1] = value;
 
+        int update_col = position / row;
+        int update_row = position % row;
+
+        //Cambiamos el valor de la matriz
+        matrix[update_col][update_row - 1] = value;
+
         //Mostrar por pantalla el vector
         System.out.println("Vector de tamaño: " + vector.length);
 
         for (int i = 0; i < vector.length; i++) {
             System.out.print(vector[i] + " ");
+        }
+
+        System.out.println("\n");
+
+        //Mostrar por pantalla la matriz
+        System.out.println("Matriz de: " + matrix.length + "x" + matrix[0].length);
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println("");
         }
 
         System.out.println("");
@@ -196,16 +211,19 @@ public class Matriz_Vector {
         return vector;
     }
 
-    public static int[][] update_matrix(int position_col, int position_row, int value, int[][] matrix) {
+    public static int[][] update_matrix(int position_col, int position_row, int value, int[][] matrix, int[] vector) {
         System.out.println("");
 
-        //Cambiamos el valor del vector
+        //Cambiamos el valor de la matriz
         matrix[position_col - 1][position_row - 1] = value;
 
-        //Mostrar por pantalla el vector
-        System.out.println("Matriz de: " + matrix.length + "x" + matrix[0].length);
+        int update_position = matrix[0].length * (position_col  - 1) + position_row;
 
-        int index = 0;
+        //Cambiamos el valor del vector
+        vector[update_position - 1] = value;
+
+        //Mostrar por pantalla la matriz
+        System.out.println("Matriz de: " + matrix.length + "x" + matrix[0].length);
 
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
@@ -213,6 +231,16 @@ public class Matriz_Vector {
             }
             System.out.println("");
         }
+
+        //Mostrar por pantalla el vector
+        System.out.println("Vector de tamaño: " + vector.length);
+
+        for (int i = 0; i < vector.length; i++) {
+            System.out.print(vector[i] + " ");
+        }
+
+        System.out.println("\n");
+        
         return matrix;
     }
 }
